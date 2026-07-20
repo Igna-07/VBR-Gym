@@ -1,0 +1,95 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MemberStatus {
+  ACTIVE
+  OVERDUE
+  SUSPENDED
+  INACTIVE
+}
+
+enum AttendanceFrequency {
+  TWO_DAYS
+  THREE_DAYS
+  DAILY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+model Member {
+  id                  String              @id @default(uuid())
+  name                String
+  phone               String              @unique
+  email               String?             @unique
+  plan                String
+  dueDate             DateTime
+  whatsappAllowed     Boolean             @default(false)
+  status              MemberStatus        @default(ACTIVE)
+  attendanceFrequency AttendanceFrequency @default(THREE_DAYS)
+  attendanceDays      String[]            @default([])
+  scheduleGroupId     String?
+  scheduleGroup       ScheduleGroup?      @relation(fields: [scheduleGroupId], references: [id], onDelete: SetNull)
+  payments            Payment[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  memberId          String        @unique
+  member            Member        @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  dueDate           DateTime
+  status            PaymentStatus @default(PENDING)
+  paidAt            DateTime?
+  reminderSentAt    DateTime?
+  whatsappMessageId String?
+  reminderError     String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([dueDate, status])
+}
+
+model ScheduleGroup {
+  id        String   @id @default(uuid())
+  name      String
+  startTime String
+  endTime   String
+  capacity  Int      @default(15)
+  active    Boolean  @default(true)
+  members   Member[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdminUser {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String
+  passwordSalt String
+  sessions     AuthSession[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model AuthSession {
+  id        String    @id @default(uuid())
+  tokenHash String    @unique
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  @@index([expiresAt])
+}
