@@ -8,6 +8,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  ValidateIf,
 } from 'class-validator'
 
 export class CreateMemberDto {
@@ -25,11 +26,12 @@ export class CreateMemberDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsIn(['Tres veces por semana', 'Todos los días'])
+  @IsIn(['Tres veces por semana', 'Todos los días', 'Plan libre'])
   plan: string
 
+  @ValidateIf((member: CreateMemberDto) => member.plan !== 'Plan libre')
   @IsDateString()
-  dueDate: string
+  dueDate?: string
 
   @IsBoolean()
   whatsappAllowed: boolean

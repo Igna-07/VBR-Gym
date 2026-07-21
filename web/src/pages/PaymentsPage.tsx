@@ -3,23 +3,26 @@ import { apiFetch } from '../api'
 
 type Payment = {
   id: string
-  dueDate: string
-  status: 'PENDING' | 'PAID' | 'OVERDUE'
+  dueDate: string | null
+  status: 'PENDING' | 'PAID' | 'OVERDUE' | 'EXEMPT'
   reminderSentAt: string | null
   reminderError: string | null
   member: {
     name: string
     phone: string
+    plan: string
     whatsappAllowed: boolean
     scheduleGroup: { id: string; name: string; startTime: string; endTime: string } | null
   }
 }
 
 const API_URL = 'http://localhost:3000'
-const labels = { PENDING: 'Pendiente', PAID: 'Pagado', OVERDUE: 'Vencido' }
+const labels = { PENDING: 'Pendiente', PAID: 'Pagado', OVERDUE: 'Vencido', EXEMPT: 'Promocionado' }
 
 function paymentUrgency(payment: Payment) {
+  if (payment.status === 'EXEMPT') return 'promoted-payment-row'
   if (payment.status === 'PAID') return 'paid-payment-row'
+  if (!payment.dueDate) return ''
   const today = new Date(); today.setHours(0, 0, 0, 0)
   const dueDate = new Date(payment.dueDate); dueDate.setHours(0, 0, 0, 0)
   const daysUntilDue = Math.ceil((dueDate.getTime() - today.getTime()) / 86400000)
@@ -29,6 +32,7 @@ function paymentUrgency(payment: Payment) {
 }
 
 function isDue(payment: Payment) {
+  if (!payment.dueDate || payment.status === 'EXEMPT') return false
   const today = new Date(); today.setHours(23, 59, 59, 999)
   return new Date(payment.dueDate) <= today
 }
@@ -78,17 +82,17 @@ export function PaymentsPage() {
     const query = search.trim().toLocaleLowerCase('es')
     if (!query) return true
     const schedule = payment.member.scheduleGroup
-    return [payment.member.name, payment.member.phone, labels[payment.status], schedule?.name || '', schedule ? `${schedule.startTime} ${schedule.endTime}` : 'sin turno']
+    return [payment.member.name, payment.member.phone, payment.member.plan, labels[payment.status], schedule?.name || '', schedule ? `${schedule.startTime} ${schedule.endTime}` : 'sin turno']
       .some((value) => value.toLocaleLowerCase('es').includes(query))
   })
 
   const groupedPayments = Object.values(filteredPayments.reduce<Record<string, { title: string; startTime: string; payments: Payment[] }>>((groups, payment) => {
     const schedule = payment.member.scheduleGroup
     const startHour = schedule ? Number(schedule.startTime.split(':')[0]) : null
-    const key = startHour === null ? 'without-schedule' : startHour < 12 ? 'morning' : 'afternoon'
+    const key = payment.status === 'EXEMPT' ? 'promoted' : startHour === null ? 'without-schedule' : startHour < 12 ? 'morning' : 'afternoon'
     groups[key] ||= {
-      title: key === 'morning' ? 'Turno mañana' : key === 'afternoon' ? 'Turno tarde' : 'Socios sin turno asignado',
-      startTime: schedule?.startTime || '99:99',
+      title: key === 'morning' ? 'Turno mañana' : key === 'afternoon' ? 'Turno tarde' : key === 'promoted' ? 'Socios promocionados' : 'Socios sin turno asignado',
+      startTime: key === 'promoted' ? '98:98' : schedule?.startTime || '99:99',
       payments: [],
     }
     if (schedule && schedule.startTime < groups[key].startTime) groups[key].startTime = schedule.startTime
@@ -117,10 +121,10 @@ export function PaymentsPage() {
           {group.payments.map((payment) => <tr key={payment.id} className={paymentUrgency(payment)}>
             <td><strong className={payment.status === 'PAID' ? 'paid-member-name' : ''}>{payment.member.name}</strong></td>
             <td><span className="payment-schedule">{payment.member.scheduleGroup ? `${payment.member.scheduleGroup.startTime} — ${payment.member.scheduleGroup.endTime}` : 'Sin asignar'}</span></td>
-            <td>{payment.member.phone}</td><td>{new Date(payment.dueDate).toLocaleDateString('es-AR', { timeZone: 'UTC' })}</td>
+            <td>{payment.member.phone}</td><td>{payment.dueDate ? new Date(payment.dueDate).toLocaleDateString('es-AR', { timeZone: 'UTC' }) : 'Sin cuota'}</td>
             <td><span className={`payment-status ${payment.status.toLowerCase()}`}>{labels[payment.status]}</span></td>
-            <td>{payment.reminderSentAt ? 'Enviado' : payment.reminderError ? 'Con error' : payment.member.whatsappAllowed ? 'Pendiente' : 'No autorizado'}</td>
-            <td><div className="payment-actions">{payment.status !== 'PAID' && <button className="small-button" onClick={() => void action(payment.id, 'paid')}>Marcar pagado</button>}{payment.status !== 'PAID' && payment.member.whatsappAllowed && isDue(payment) && <button className="small-button secondary" disabled={!configured} onClick={() => void action(payment.id, 'send-reminder')}>Dar aviso</button>}</div></td>
+            <td>{payment.status === 'EXEMPT' ? 'Sin avisos de pago' : payment.reminderSentAt ? 'Enviado' : payment.reminderError ? 'Con error' : payment.member.whatsappAllowed ? 'Pendiente' : 'No autorizado'}</td>
+            <td><div className="payment-actions">{payment.status === 'EXEMPT' ? <span className="no-payment-required">No requiere pago</span> : <>{payment.status !== 'PAID' && <button className="small-button" onClick={() => void action(payment.id, 'paid')}>Marcar pagado</button>}{payment.status !== 'PAID' && payment.member.whatsappAllowed && isDue(payment) && <button className="small-button secondary" disabled={!configured} onClick={() => void action(payment.id, 'send-reminder')}>Dar aviso</button>}</>}</div></td>
           </tr>)}
         </tbody></table></div>
       </article>)}

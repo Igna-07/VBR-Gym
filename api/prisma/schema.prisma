@@ -25,6 +25,7 @@ enum PaymentStatus {
   PENDING
   PAID
   OVERDUE
+  EXEMPT
 }
 
 model Member {
@@ -33,7 +34,7 @@ model Member {
   phone               String              @unique
   email               String?             @unique
   plan                String
-  dueDate             DateTime
+  dueDate             DateTime?
   whatsappAllowed     Boolean             @default(false)
   status              MemberStatus        @default(ACTIVE)
   attendanceFrequency AttendanceFrequency @default(THREE_DAYS)
@@ -49,7 +50,7 @@ model Payment {
   id                String        @id @default(uuid())
   memberId          String        @unique
   member            Member        @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  dueDate           DateTime
+  dueDate           DateTime?
   status            PaymentStatus @default(PENDING)
   paidAt            DateTime?
   reminderSentAt    DateTime?

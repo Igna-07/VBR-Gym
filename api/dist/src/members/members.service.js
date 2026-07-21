@@ -25,7 +25,8 @@ let MembersService = class MembersService {
         });
     }
     async create(data) {
-        const dueDate = new Date(`${data.dueDate}T12:00:00.000Z`);
+        const isPromoted = data.plan === 'Plan libre';
+        const dueDate = isPromoted ? null : new Date(`${data.dueDate}T12:00:00.000Z`);
         try {
             return await this.prisma.member.create({
                 data: {
@@ -39,7 +40,7 @@ let MembersService = class MembersService {
                     attendanceDays: data.attendanceDays,
                     scheduleGroupId: data.scheduleGroupId || null,
                     payments: {
-                        create: { dueDate },
+                        create: { dueDate, status: isPromoted ? 'EXEMPT' : 'PENDING' },
                     },
                 },
             });
@@ -47,6 +48,17 @@ let MembersService = class MembersService {
         catch (error) {
             if (error.code === 'P2002') {
                 throw new common_1.ConflictException('Ya existe un socio con ese teléfono o correo electrónico.');
+            }
+            throw error;
+        }
+    }
+    async remove(id) {
+        try {
+            return await this.prisma.member.delete({ where: { id } });
+        }
+        catch (error) {
+            if (error.code === 'P2025') {
+                throw new common_1.NotFoundException('El socio no existe.');
             }
             throw error;
         }

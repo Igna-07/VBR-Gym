@@ -15,6 +15,7 @@ exports.AttendanceFrequency = {
 exports.PaymentStatus = {
     PENDING: 'PENDING',
     PAID: 'PAID',
-    OVERDUE: 'OVERDUE'
+    OVERDUE: 'OVERDUE',
+    EXEMPT: 'EXEMPT'
 };
 //# sourceMappingURL=enums.js.map

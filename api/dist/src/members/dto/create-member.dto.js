@@ -41,10 +41,11 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsIn)(['Tres veces por semana', 'Todos los días']),
+    (0, class_validator_1.IsIn)(['Tres veces por semana', 'Todos los días', 'Plan libre']),
     __metadata("design:type", String)
 ], CreateMemberDto.prototype, "plan", void 0);
 __decorate([
+    (0, class_validator_1.ValidateIf)((member) => member.plan !== 'Plan libre'),
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", String)
 ], CreateMemberDto.prototype, "dueDate", void 0);

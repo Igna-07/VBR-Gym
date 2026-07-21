@@ -108,7 +108,7 @@ export type PaymentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type PaymentGroupByOutputType = {
     id: string;
     memberId: string;
-    dueDate: Date;
+    dueDate: Date | null;
     status: $Enums.PaymentStatus;
     paidAt: Date | null;
     reminderSentAt: Date | null;
@@ -129,7 +129,7 @@ export type PaymentWhereInput = {
     NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[];
     id?: Prisma.StringFilter<"Payment"> | string;
     memberId?: Prisma.StringFilter<"Payment"> | string;
-    dueDate?: Prisma.DateTimeFilter<"Payment"> | Date | string;
+    dueDate?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
     status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus;
     paidAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
     reminderSentAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
@@ -142,7 +142,7 @@ export type PaymentWhereInput = {
 export type PaymentOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     memberId?: Prisma.SortOrder;
-    dueDate?: Prisma.SortOrder;
+    dueDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     status?: Prisma.SortOrder;
     paidAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     reminderSentAt?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -158,7 +158,7 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
     AND?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[];
     OR?: Prisma.PaymentWhereInput[];
     NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[];
-    dueDate?: Prisma.DateTimeFilter<"Payment"> | Date | string;
+    dueDate?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
     status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus;
     paidAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
     reminderSentAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
@@ -171,7 +171,7 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
 export type PaymentOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     memberId?: Prisma.SortOrder;
-    dueDate?: Prisma.SortOrder;
+    dueDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     status?: Prisma.SortOrder;
     paidAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     reminderSentAt?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -189,7 +189,7 @@ export type PaymentScalarWhereWithAggregatesInput = {
     NOT?: Prisma.PaymentScalarWhereWithAggregatesInput | Prisma.PaymentScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"Payment"> | string;
     memberId?: Prisma.StringWithAggregatesFilter<"Payment"> | string;
-    dueDate?: Prisma.DateTimeWithAggregatesFilter<"Payment"> | Date | string;
+    dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null;
     status?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus;
     paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null;
     reminderSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null;
@@ -200,7 +200,7 @@ export type PaymentScalarWhereWithAggregatesInput = {
 };
 export type PaymentCreateInput = {
     id?: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     status?: $Enums.PaymentStatus;
     paidAt?: Date | string | null;
     reminderSentAt?: Date | string | null;
@@ -213,7 +213,7 @@ export type PaymentCreateInput = {
 export type PaymentUncheckedCreateInput = {
     id?: string;
     memberId: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     status?: $Enums.PaymentStatus;
     paidAt?: Date | string | null;
     reminderSentAt?: Date | string | null;
@@ -224,7 +224,7 @@ export type PaymentUncheckedCreateInput = {
 };
 export type PaymentUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -237,7 +237,7 @@ export type PaymentUpdateInput = {
 export type PaymentUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     memberId?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -249,7 +249,7 @@ export type PaymentUncheckedUpdateInput = {
 export type PaymentCreateManyInput = {
     id?: string;
     memberId: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     status?: $Enums.PaymentStatus;
     paidAt?: Date | string | null;
     reminderSentAt?: Date | string | null;
@@ -260,7 +260,7 @@ export type PaymentCreateManyInput = {
 };
 export type PaymentUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -272,7 +272,7 @@ export type PaymentUpdateManyMutationInput = {
 export type PaymentUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     memberId?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -366,12 +366,9 @@ export type PaymentUncheckedUpdateManyWithoutMemberNestedInput = {
 export type EnumPaymentStatusFieldUpdateOperationsInput = {
     set?: $Enums.PaymentStatus;
 };
-export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null;
-};
 export type PaymentCreateWithoutMemberInput = {
     id?: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     status?: $Enums.PaymentStatus;
     paidAt?: Date | string | null;
     reminderSentAt?: Date | string | null;
@@ -382,7 +379,7 @@ export type PaymentCreateWithoutMemberInput = {
 };
 export type PaymentUncheckedCreateWithoutMemberInput = {
     id?: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     status?: $Enums.PaymentStatus;
     paidAt?: Date | string | null;
     reminderSentAt?: Date | string | null;
@@ -418,7 +415,7 @@ export type PaymentScalarWhereInput = {
     NOT?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[];
     id?: Prisma.StringFilter<"Payment"> | string;
     memberId?: Prisma.StringFilter<"Payment"> | string;
-    dueDate?: Prisma.DateTimeFilter<"Payment"> | Date | string;
+    dueDate?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
     status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus;
     paidAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
     reminderSentAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
@@ -429,7 +426,7 @@ export type PaymentScalarWhereInput = {
 };
 export type PaymentCreateManyMemberInput = {
     id?: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     status?: $Enums.PaymentStatus;
     paidAt?: Date | string | null;
     reminderSentAt?: Date | string | null;
@@ -440,7 +437,7 @@ export type PaymentCreateManyMemberInput = {
 };
 export type PaymentUpdateWithoutMemberInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -451,7 +448,7 @@ export type PaymentUpdateWithoutMemberInput = {
 };
 export type PaymentUncheckedUpdateWithoutMemberInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -462,7 +459,7 @@ export type PaymentUncheckedUpdateWithoutMemberInput = {
 };
 export type PaymentUncheckedUpdateManyWithoutMemberInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     reminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -540,7 +537,7 @@ export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         memberId: string;
-        dueDate: Date;
+        dueDate: Date | null;
         status: $Enums.PaymentStatus;
         paidAt: Date | null;
         reminderSentAt: Date | null;
