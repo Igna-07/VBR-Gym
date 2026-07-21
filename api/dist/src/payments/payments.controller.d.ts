@@ -5,41 +5,41 @@ export declare class PaymentsController {
     findAll(): Promise<({
         member: {
             scheduleGroup: {
-                active: boolean;
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 startTime: string;
                 endTime: string;
                 capacity: number;
+                active: boolean;
             } | null;
         } & {
-            status: import("../generated/prisma/enums").MemberStatus;
+            id: string;
             name: string;
             phone: string;
             email: string | null;
             plan: string;
-            dueDate: Date;
+            dueDate: Date | null;
             whatsappAllowed: boolean;
+            status: import("../generated/prisma/enums").MemberStatus;
             attendanceFrequency: import("../generated/prisma/enums").AttendanceFrequency;
             attendanceDays: string[];
             scheduleGroupId: string | null;
-            id: string;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
-        status: import("../generated/prisma/enums").PaymentStatus;
-        dueDate: Date;
         id: string;
+        dueDate: Date | null;
+        status: import("../generated/prisma/enums").PaymentStatus;
         createdAt: Date;
         updatedAt: Date;
+        memberId: string;
         paidAt: Date | null;
         reminderSentAt: Date | null;
         whatsappMessageId: string | null;
         reminderError: string | null;
-        memberId: string;
     })[]>;
     whatsappStatus(): {
         configured: boolean;
@@ -47,58 +47,58 @@ export declare class PaymentsController {
     };
     markPaid(id: string): Promise<{
         member: {
-            status: import("../generated/prisma/enums").MemberStatus;
+            id: string;
             name: string;
             phone: string;
             email: string | null;
             plan: string;
-            dueDate: Date;
+            dueDate: Date | null;
             whatsappAllowed: boolean;
+            status: import("../generated/prisma/enums").MemberStatus;
             attendanceFrequency: import("../generated/prisma/enums").AttendanceFrequency;
             attendanceDays: string[];
             scheduleGroupId: string | null;
-            id: string;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
-        status: import("../generated/prisma/enums").PaymentStatus;
-        dueDate: Date;
         id: string;
+        dueDate: Date | null;
+        status: import("../generated/prisma/enums").PaymentStatus;
         createdAt: Date;
         updatedAt: Date;
+        memberId: string;
         paidAt: Date | null;
         reminderSentAt: Date | null;
         whatsappMessageId: string | null;
         reminderError: string | null;
-        memberId: string;
     }>;
     sendReminder(id: string): Promise<{
         member: {
-            status: import("../generated/prisma/enums").MemberStatus;
+            id: string;
             name: string;
             phone: string;
             email: string | null;
             plan: string;
-            dueDate: Date;
+            dueDate: Date | null;
             whatsappAllowed: boolean;
+            status: import("../generated/prisma/enums").MemberStatus;
             attendanceFrequency: import("../generated/prisma/enums").AttendanceFrequency;
             attendanceDays: string[];
             scheduleGroupId: string | null;
-            id: string;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
-        status: import("../generated/prisma/enums").PaymentStatus;
-        dueDate: Date;
         id: string;
+        dueDate: Date | null;
+        status: import("../generated/prisma/enums").PaymentStatus;
         createdAt: Date;
         updatedAt: Date;
+        memberId: string;
         paidAt: Date | null;
         reminderSentAt: Date | null;
         whatsappMessageId: string | null;
         reminderError: string | null;
-        memberId: string;
     }>;
 }

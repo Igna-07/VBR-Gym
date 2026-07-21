@@ -125,7 +125,7 @@ export type MemberGroupByOutputType = {
     phone: string;
     email: string | null;
     plan: string;
-    dueDate: Date;
+    dueDate: Date | null;
     whatsappAllowed: boolean;
     status: $Enums.MemberStatus;
     attendanceFrequency: $Enums.AttendanceFrequency;
@@ -149,7 +149,7 @@ export type MemberWhereInput = {
     phone?: Prisma.StringFilter<"Member"> | string;
     email?: Prisma.StringNullableFilter<"Member"> | string | null;
     plan?: Prisma.StringFilter<"Member"> | string;
-    dueDate?: Prisma.DateTimeFilter<"Member"> | Date | string;
+    dueDate?: Prisma.DateTimeNullableFilter<"Member"> | Date | string | null;
     whatsappAllowed?: Prisma.BoolFilter<"Member"> | boolean;
     status?: Prisma.EnumMemberStatusFilter<"Member"> | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFilter<"Member"> | $Enums.AttendanceFrequency;
@@ -166,7 +166,7 @@ export type MemberOrderByWithRelationInput = {
     phone?: Prisma.SortOrder;
     email?: Prisma.SortOrderInput | Prisma.SortOrder;
     plan?: Prisma.SortOrder;
-    dueDate?: Prisma.SortOrder;
+    dueDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     whatsappAllowed?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     attendanceFrequency?: Prisma.SortOrder;
@@ -186,7 +186,7 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
     NOT?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[];
     name?: Prisma.StringFilter<"Member"> | string;
     plan?: Prisma.StringFilter<"Member"> | string;
-    dueDate?: Prisma.DateTimeFilter<"Member"> | Date | string;
+    dueDate?: Prisma.DateTimeNullableFilter<"Member"> | Date | string | null;
     whatsappAllowed?: Prisma.BoolFilter<"Member"> | boolean;
     status?: Prisma.EnumMemberStatusFilter<"Member"> | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFilter<"Member"> | $Enums.AttendanceFrequency;
@@ -203,7 +203,7 @@ export type MemberOrderByWithAggregationInput = {
     phone?: Prisma.SortOrder;
     email?: Prisma.SortOrderInput | Prisma.SortOrder;
     plan?: Prisma.SortOrder;
-    dueDate?: Prisma.SortOrder;
+    dueDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     whatsappAllowed?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     attendanceFrequency?: Prisma.SortOrder;
@@ -224,7 +224,7 @@ export type MemberScalarWhereWithAggregatesInput = {
     phone?: Prisma.StringWithAggregatesFilter<"Member"> | string;
     email?: Prisma.StringNullableWithAggregatesFilter<"Member"> | string | null;
     plan?: Prisma.StringWithAggregatesFilter<"Member"> | string;
-    dueDate?: Prisma.DateTimeWithAggregatesFilter<"Member"> | Date | string;
+    dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Member"> | Date | string | null;
     whatsappAllowed?: Prisma.BoolWithAggregatesFilter<"Member"> | boolean;
     status?: Prisma.EnumMemberStatusWithAggregatesFilter<"Member"> | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyWithAggregatesFilter<"Member"> | $Enums.AttendanceFrequency;
@@ -239,7 +239,7 @@ export type MemberCreateInput = {
     phone: string;
     email?: string | null;
     plan: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     whatsappAllowed?: boolean;
     status?: $Enums.MemberStatus;
     attendanceFrequency?: $Enums.AttendanceFrequency;
@@ -255,7 +255,7 @@ export type MemberUncheckedCreateInput = {
     phone: string;
     email?: string | null;
     plan: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     whatsappAllowed?: boolean;
     status?: $Enums.MemberStatus;
     attendanceFrequency?: $Enums.AttendanceFrequency;
@@ -271,7 +271,7 @@ export type MemberUpdateInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -287,7 +287,7 @@ export type MemberUncheckedUpdateInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -303,7 +303,7 @@ export type MemberCreateManyInput = {
     phone: string;
     email?: string | null;
     plan: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     whatsappAllowed?: boolean;
     status?: $Enums.MemberStatus;
     attendanceFrequency?: $Enums.AttendanceFrequency;
@@ -318,7 +318,7 @@ export type MemberUpdateManyMutationInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -332,7 +332,7 @@ export type MemberUncheckedUpdateManyInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -412,8 +412,8 @@ export type StringFieldUpdateOperationsInput = {
 export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null;
 };
-export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string;
+export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null;
 };
 export type BoolFieldUpdateOperationsInput = {
     set?: boolean;
@@ -427,6 +427,9 @@ export type EnumAttendanceFrequencyFieldUpdateOperationsInput = {
 export type MemberUpdateattendanceDaysInput = {
     set?: string[];
     push?: string | string[];
+};
+export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string;
 };
 export type MemberCreateNestedOneWithoutPaymentsInput = {
     create?: Prisma.XOR<Prisma.MemberCreateWithoutPaymentsInput, Prisma.MemberUncheckedCreateWithoutPaymentsInput>;
@@ -484,7 +487,7 @@ export type MemberCreateWithoutPaymentsInput = {
     phone: string;
     email?: string | null;
     plan: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     whatsappAllowed?: boolean;
     status?: $Enums.MemberStatus;
     attendanceFrequency?: $Enums.AttendanceFrequency;
@@ -499,7 +502,7 @@ export type MemberUncheckedCreateWithoutPaymentsInput = {
     phone: string;
     email?: string | null;
     plan: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     whatsappAllowed?: boolean;
     status?: $Enums.MemberStatus;
     attendanceFrequency?: $Enums.AttendanceFrequency;
@@ -527,7 +530,7 @@ export type MemberUpdateWithoutPaymentsInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -542,7 +545,7 @@ export type MemberUncheckedUpdateWithoutPaymentsInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -557,7 +560,7 @@ export type MemberCreateWithoutScheduleGroupInput = {
     phone: string;
     email?: string | null;
     plan: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     whatsappAllowed?: boolean;
     status?: $Enums.MemberStatus;
     attendanceFrequency?: $Enums.AttendanceFrequency;
@@ -572,7 +575,7 @@ export type MemberUncheckedCreateWithoutScheduleGroupInput = {
     phone: string;
     email?: string | null;
     plan: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     whatsappAllowed?: boolean;
     status?: $Enums.MemberStatus;
     attendanceFrequency?: $Enums.AttendanceFrequency;
@@ -611,7 +614,7 @@ export type MemberScalarWhereInput = {
     phone?: Prisma.StringFilter<"Member"> | string;
     email?: Prisma.StringNullableFilter<"Member"> | string | null;
     plan?: Prisma.StringFilter<"Member"> | string;
-    dueDate?: Prisma.DateTimeFilter<"Member"> | Date | string;
+    dueDate?: Prisma.DateTimeNullableFilter<"Member"> | Date | string | null;
     whatsappAllowed?: Prisma.BoolFilter<"Member"> | boolean;
     status?: Prisma.EnumMemberStatusFilter<"Member"> | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFilter<"Member"> | $Enums.AttendanceFrequency;
@@ -626,7 +629,7 @@ export type MemberCreateManyScheduleGroupInput = {
     phone: string;
     email?: string | null;
     plan: string;
-    dueDate: Date | string;
+    dueDate?: Date | string | null;
     whatsappAllowed?: boolean;
     status?: $Enums.MemberStatus;
     attendanceFrequency?: $Enums.AttendanceFrequency;
@@ -640,7 +643,7 @@ export type MemberUpdateWithoutScheduleGroupInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -655,7 +658,7 @@ export type MemberUncheckedUpdateWithoutScheduleGroupInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -670,7 +673,7 @@ export type MemberUncheckedUpdateManyWithoutScheduleGroupInput = {
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     plan?: Prisma.StringFieldUpdateOperationsInput | string;
-    dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     whatsappAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus;
     attendanceFrequency?: Prisma.EnumAttendanceFrequencyFieldUpdateOperationsInput | $Enums.AttendanceFrequency;
@@ -779,7 +782,7 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         phone: string;
         email: string | null;
         plan: string;
-        dueDate: Date;
+        dueDate: Date | null;
         whatsappAllowed: boolean;
         status: $Enums.MemberStatus;
         attendanceFrequency: $Enums.AttendanceFrequency;

@@ -5,93 +5,93 @@ export declare class ScheduleGroupsService {
     constructor(prisma: PrismaService);
     findAll(): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<({
         members: {
-            status: import("../generated/prisma/enums").MemberStatus;
+            id: string;
             name: string;
             phone: string;
             email: string | null;
             plan: string;
-            dueDate: Date;
+            dueDate: Date | null;
             whatsappAllowed: boolean;
+            status: import("../generated/prisma/enums").MemberStatus;
             attendanceFrequency: import("../generated/prisma/enums").AttendanceFrequency;
             attendanceDays: string[];
             scheduleGroupId: string | null;
-            id: string;
             createdAt: Date;
             updatedAt: Date;
         }[];
     } & {
-        active: boolean;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         startTime: string;
         endTime: string;
         capacity: number;
+        active: boolean;
     })[]>;
     create(data: CreateScheduleGroupDto): import("../generated/prisma/models").Prisma__ScheduleGroupClient<{
         members: {
-            status: import("../generated/prisma/enums").MemberStatus;
+            id: string;
             name: string;
             phone: string;
             email: string | null;
             plan: string;
-            dueDate: Date;
+            dueDate: Date | null;
             whatsappAllowed: boolean;
+            status: import("../generated/prisma/enums").MemberStatus;
             attendanceFrequency: import("../generated/prisma/enums").AttendanceFrequency;
             attendanceDays: string[];
             scheduleGroupId: string | null;
-            id: string;
             createdAt: Date;
             updatedAt: Date;
         }[];
     } & {
-        active: boolean;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         startTime: string;
         endTime: string;
         capacity: number;
+        active: boolean;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
     addMember(groupId: string, memberId: string, day: string): Promise<({
         members: {
-            status: import("../generated/prisma/enums").MemberStatus;
+            id: string;
             name: string;
             phone: string;
             email: string | null;
             plan: string;
-            dueDate: Date;
+            dueDate: Date | null;
             whatsappAllowed: boolean;
+            status: import("../generated/prisma/enums").MemberStatus;
             attendanceFrequency: import("../generated/prisma/enums").AttendanceFrequency;
             attendanceDays: string[];
             scheduleGroupId: string | null;
-            id: string;
             createdAt: Date;
             updatedAt: Date;
         }[];
     } & {
-        active: boolean;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         startTime: string;
         endTime: string;
         capacity: number;
+        active: boolean;
     }) | null>;
     removeMember(groupId: string, memberId: string): import("../generated/prisma/internal/prismaNamespace").PrismaPromise<import("../generated/prisma/internal/prismaNamespace").BatchPayload>;
     remove(id: string): Promise<{
-        active: boolean;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         startTime: string;
         endTime: string;
         capacity: number;
+        active: boolean;
     }>;
 }

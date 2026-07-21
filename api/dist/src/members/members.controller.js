@@ -27,6 +27,9 @@ let MembersController = class MembersController {
     create(data) {
         return this.membersService.create(data);
     }
+    remove(id) {
+        return this.membersService.remove(id);
+    }
 };
 exports.MembersController = MembersController;
 __decorate([
@@ -42,6 +45,13 @@ __decorate([
     __metadata("design:paramtypes", [create_member_dto_1.CreateMemberDto]),
     __metadata("design:returntype", void 0)
 ], MembersController.prototype, "create", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], MembersController.prototype, "remove", null);
 exports.MembersController = MembersController = __decorate([
     (0, common_1.Controller)('members'),
     __metadata("design:paramtypes", [members_service_1.MembersService])

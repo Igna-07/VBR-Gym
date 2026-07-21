@@ -15,5 +15,6 @@ export declare const PaymentStatus: {
     readonly PENDING: "PENDING";
     readonly PAID: "PAID";
     readonly OVERDUE: "OVERDUE";
+    readonly EXEMPT: "EXEMPT";
 };
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus];

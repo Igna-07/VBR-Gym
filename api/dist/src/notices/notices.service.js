@@ -19,12 +19,14 @@ let NoticesService = class NoticesService {
     }
     async findAll() {
         const payments = await this.prisma.payment.findMany({
-            where: { status: { not: 'PAID' } },
+            where: { status: { in: ['PENDING', 'OVERDUE'] }, dueDate: { not: null } },
             include: { member: { include: { scheduleGroup: true } } },
             orderBy: { dueDate: 'asc' },
         });
         const now = new Date();
         return payments.flatMap((payment) => {
+            if (!payment.dueDate)
+                return [];
             const daysOverdue = Math.floor((now.getTime() - payment.dueDate.getTime()) / 86400000);
             const base = {
                 paymentId: payment.id,
