@@ -20,6 +20,7 @@ export class PortalController {
       name: member.name,
       plan: member.plan,
       dni: member.dni,
+      checkInCode: `PG:${member.id}`,
       monthlyFee: member.monthlyFee,
       dueDate: member.dueDate,
       paused: member.status === 'SUSPENDED',

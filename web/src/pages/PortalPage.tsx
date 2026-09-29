@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
+import QRCode from 'qrcode'
 import { apiFetch, apiSend, METHODS, money, shortDate, type Method } from '../api'
 import { Brand } from '../Brand'
 
 type Portal = {
-  name: string; plan: string; dni: string | null; monthlyFee: number; dueDate: string | null; paused: boolean
+  name: string; plan: string; dni: string | null; checkInCode: string; monthlyFee: number; dueDate: string | null; paused: boolean
   paymentStatus: 'PENDING' | 'PAID' | 'OVERDUE' | 'EXEMPT'; canPay: boolean; onlinePayment: boolean
   schedule: string | null; attendanceDays: string[]; visitsThisMonth: number
   receipts: { amount: number; method: Method; period: string; paidAt: string }[]
@@ -22,6 +23,11 @@ export function PortalPage({ token }: { token: string }) {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const [paying, setPaying] = useState(false)
+  const [qr, setQr] = useState('')
+
+  useEffect(() => {
+    if (portal) void QRCode.toDataURL(portal.checkInCode, { width: 480, margin: 1, errorCorrectionLevel: 'M' }).then(setQr)
+  }, [portal])
 
   useEffect(() => {
     async function load() {
@@ -77,7 +83,10 @@ export function PortalPage({ token }: { token: string }) {
         <article><span>Días</span><strong>{portal.attendanceDays.length === 6 ? 'Todos los días' : portal.attendanceDays.map((day) => day.slice(0, 3)).join(' · ') || '—'}</strong></article>
       </section>
 
-      {portal.dni && <section className="portal-code"><span>Tu código de ingreso</span><strong>{portal.dni}</strong><small>Ingresalo en la pantalla de recepción al llegar.</small></section>}
+      <section className="portal-code"><span>Tu pase de ingreso</span>
+        {qr && <img src={qr} alt="Código QR de ingreso" width={240} height={240} />}
+        <small>Mostralo en la pantalla de recepción al llegar.{portal.dni ? <> También podés ingresar tu DNI: <b>{portal.dni}</b></> : null}</small>
+      </section>
 
       {portal.receipts.length > 0 && <section className="portal-history">
         <h2>Últimos pagos</h2>

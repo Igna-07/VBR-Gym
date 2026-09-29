@@ -101,15 +101,17 @@ export class MembersService {
     }
   }
 
+  // Acepta el QR del portal ("PG:<id>"), un DNI o los últimos dígitos del teléfono.
   async checkIn(query: string) {
+    const qrId = query.trim().match(/^PG:([0-9a-f-]{36})$/i)?.[1]
     const digits = query.replace(/\D/g, '')
-    if (digits.length < 6) throw new BadRequestException('Ingresá un DNI o teléfono válido.')
+    if (!qrId && digits.length < 6) throw new BadRequestException('Ingresá un DNI o teléfono válido.')
     const matches = await this.prisma.member.findMany({
-      where: { OR: [{ dni: digits }, { phone: { endsWith: digits.slice(-8) } }] },
+      where: qrId ? { id: qrId } : { OR: [{ dni: digits }, { phone: { endsWith: digits.slice(-8) } }] },
       include: { payments: true },
       take: 2,
     })
-    if (matches.length === 0) throw new NotFoundException('No encontramos un socio con ese DNI o teléfono.')
+    if (matches.length === 0) throw new NotFoundException(qrId ? 'El código QR no corresponde a ningún socio.' : 'No encontramos un socio con ese DNI o teléfono.')
     if (matches.length > 1) throw new ConflictException('Hay más de un socio con ese dato. Usá el DNI.')
     const member = matches[0]
     const today = argentinaTodayInstants()
