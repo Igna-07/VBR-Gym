@@ -28,12 +28,21 @@ enum PaymentStatus {
   EXEMPT
 }
 
+enum ReminderType {
+  UPCOMING
+  OVERDUE
+}
+
 model Member {
   id                  String              @id @default(uuid())
   name                String
   phone               String              @unique
   email               String?             @unique
+  dni                 String?             @unique
   plan                String
+  monthlyFee          Int                 @default(0)
+  pausedAt            DateTime?
+  portalToken         String              @unique @default(dbgenerated("gen_random_uuid()::text"))
   dueDate             DateTime?
   whatsappAllowed     Boolean             @default(false)
   status              MemberStatus        @default(ACTIVE)
@@ -42,24 +51,44 @@ model Member {
   scheduleGroupId     String?
   scheduleGroup       ScheduleGroup?      @relation(fields: [scheduleGroupId], references: [id], onDelete: SetNull)
   payments            Payment[]
+  receipts            PaymentReceipt[]
+  checkIns            CheckIn[]
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 }
 
 model Payment {
-  id                String        @id @default(uuid())
-  memberId          String        @unique
-  member            Member        @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  dueDate           DateTime?
-  status            PaymentStatus @default(PENDING)
-  paidAt            DateTime?
-  reminderSentAt    DateTime?
-  whatsappMessageId String?
-  reminderError     String?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  id                        String        @id @default(uuid())
+  memberId                  String        @unique
+  member                    Member        @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  dueDate                   DateTime?
+  status                    PaymentStatus @default(PENDING)
+  paidAt                    DateTime?
+  upcomingReminderSentAt    DateTime?
+  upcomingWhatsappMessageId String?
+  upcomingReminderError     String?
+  reminderSentAt            DateTime?
+  whatsappMessageId         String?
+  reminderError             String?
+  reminderLogs              PaymentReminderLog[]
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
 
   @@index([dueDate, status])
+}
+
+model PaymentReminderLog {
+  id                String       @id @default(uuid())
+  paymentId         String
+  payment           Payment      @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  type              ReminderType
+  reminderDay       DateTime
+  dueDate           DateTime
+  whatsappMessageId String?
+  sentAt            DateTime     @default(now())
+
+  @@unique([paymentId, type, reminderDay])
+  @@index([reminderDay, type])
 }
 
 model ScheduleGroup {
@@ -93,4 +122,44 @@ model AuthSession {
   createdAt DateTime  @default(now())
 
   @@index([expiresAt])
+}
+
+enum PaymentMethod {
+  CASH
+  TRANSFER
+  MERCADOPAGO
+  CARD
+}
+
+model Plan {
+  id        String              @id @default(uuid())
+  name      String              @unique
+  price     Int                 @default(0)
+  frequency AttendanceFrequency
+  exempt    Boolean             @default(false)
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+}
+
+model PaymentReceipt {
+  id       String        @id @default(uuid())
+  memberId String
+  member   Member        @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  amount   Int
+  method   PaymentMethod
+  period      DateTime
+  paidAt      DateTime      @default(now())
+  mpPaymentId String?       @unique
+
+  @@index([paidAt])
+}
+
+model CheckIn {
+  id        String   @id @default(uuid())
+  memberId  String
+  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  checkedAt DateTime @default(now())
+
+  @@index([checkedAt])
+  @@index([memberId, checkedAt])
 }

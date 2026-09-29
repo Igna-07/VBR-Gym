@@ -8,6 +8,7 @@ import { ScheduleGroupsModule } from './schedule-groups/schedule-groups.module'
 import { PaymentsModule } from './payments/payments.module'
 import { NoticesModule } from './notices/notices.module'
 import { AuthModule } from './auth/auth.module'
+import { PlansController } from './plans/plans.controller'
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { AuthModule } from './auth/auth.module'
     NoticesModule,
     AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, PlansController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -3,12 +3,13 @@ import {
   IsBoolean,
   IsDateString,
   IsEmail,
-  IsIn,
+  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
-  ValidateIf,
+  Matches,
+  Min,
 } from 'class-validator'
 
 export class CreateMemberDto {
@@ -24,12 +25,21 @@ export class CreateMemberDto {
   @IsEmail()
   email?: string
 
+  @IsOptional()
+  @Matches(/^\d{7,9}$/, { message: 'El DNI debe tener entre 7 y 9 números, sin puntos.' })
+  dni?: string
+
   @IsString()
   @IsNotEmpty()
-  @IsIn(['Tres veces por semana', 'Todos los días', 'Plan libre'])
   plan: string
 
-  @ValidateIf((member: CreateMemberDto) => member.plan !== 'Plan libre')
+  // Si no se envía, se usa el precio del plan.
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  monthlyFee?: number
+
+  @IsOptional()
   @IsDateString()
   dueDate?: string
 
@@ -48,4 +58,10 @@ export class CreateMemberDto {
   @IsOptional()
   @IsUUID()
   scheduleGroupId?: string
+}
+
+export class CheckInDto {
+  @IsString()
+  @IsNotEmpty()
+  query: string
 }

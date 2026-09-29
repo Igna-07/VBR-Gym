@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { apiFetch } from '../api'
+import { Brand } from '../Brand'
 
 type Admin = { id: string; email: string }
 
@@ -36,7 +37,7 @@ export function AuthPage({ onAuthenticated }: { onAuthenticated: (admin: Admin) 
   }
 
   return <main className="auth-page"><section className="auth-card">
-    <img src="/logo2.png" alt="V-BR Garage Gym" />
+    <Brand large />
     {hasAdmin === null ? <div className="auth-connection-state"><p>{error || 'Preparando acceso...'}</p>{error && <button className="secondary-button" onClick={() => void checkStatus()}>Reintentar conexión</button>}</div> : <><div className="auth-heading"><span>Panel administrativo</span><h1>{hasAdmin ? 'Iniciar sesión' : 'Crear administrador'}</h1><p>{hasAdmin ? 'Ingresá para administrar socios, turnos y pagos.' : 'Este será el único acceso inicial al sistema.'}</p></div>
       {error && <div className="inline-form-error">{error}</div>}
       <form className="auth-form" onSubmit={submit}><label>Correo electrónico<input name="email" type="email" autoComplete="email" placeholder="administrador@correo.com" required autoFocus /></label><label>Contraseña<input name="password" type="password" autoComplete={hasAdmin ? 'current-password' : 'new-password'} minLength={8} required /><small>Mínimo 8 caracteres.</small></label><button className="primary-button" disabled={saving}>{saving ? 'Ingresando...' : hasAdmin ? 'Ingresar' : 'Crear cuenta y entrar'}</button></form>

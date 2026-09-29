@@ -3,7 +3,6 @@ import { apiFetch } from '../api'
 
 type Member = { id: string; name: string; phone: string; attendanceFrequency: 'THREE_DAYS' | 'DAILY'; attendanceDays: string[]; scheduleGroupId: string | null }
 type Group = { id: string; name: string; startTime: string; endTime: string; capacity: number; members: Member[] }
-const API_URL = 'http://localhost:3000'
 const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
 export function ScheduleGroupsPage() {
@@ -18,7 +17,7 @@ export function ScheduleGroupsPage() {
 
   async function loadData() {
     try {
-      const [groupsResponse, membersResponse] = await Promise.all([apiFetch(`${API_URL}/schedule-groups`), apiFetch(`${API_URL}/members`)])
+      const [groupsResponse, membersResponse] = await Promise.all([apiFetch(`/schedule-groups`), apiFetch(`/members`)])
       if (!groupsResponse.ok || !membersResponse.ok) throw new Error()
       setGroups(await groupsResponse.json()); setMembers(await membersResponse.json())
     } catch { setError('No se pudieron cargar los turnos.') }
@@ -30,7 +29,7 @@ export function ScheduleGroupsPage() {
     event.preventDefault(); const form = new FormData(event.currentTarget)
     try {
       setIsSaving(true); setError('')
-      const response = await apiFetch(`${API_URL}/schedule-groups`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: String(form.get('name')), startTime: String(form.get('startTime')), endTime: String(form.get('endTime')), capacity: Number(form.get('capacity')) }) })
+      const response = await apiFetch(`/schedule-groups`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: String(form.get('name')), startTime: String(form.get('startTime')), endTime: String(form.get('endTime')), capacity: Number(form.get('capacity')) }) })
       if (!response.ok) throw new Error('No se pudo crear el horario.')
       setShowForm(false); await loadData()
     } catch (requestError) { setError(requestError instanceof Error ? requestError.message : 'No se pudo crear el horario.') }
@@ -40,19 +39,19 @@ export function ScheduleGroupsPage() {
   async function addMember(groupId: string, memberId: string) {
     try {
       setError('')
-      const response = await apiFetch(`${API_URL}/schedule-groups/${groupId}/members/${memberId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ day: selectedDay }) })
+      const response = await apiFetch(`/schedule-groups/${groupId}/members/${memberId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ day: selectedDay }) })
       if (!response.ok) { const body = await response.json(); throw new Error(body.message || 'No se pudo agregar el socio.') }
       setAddingTo(null); await loadData()
     } catch (requestError) { setError(requestError instanceof Error ? requestError.message : 'No se pudo agregar el socio.') }
   }
 
   async function removeMember(groupId: string, memberId: string) {
-    await apiFetch(`${API_URL}/schedule-groups/${groupId}/members/${memberId}`, { method: 'DELETE' }); await loadData()
+    await apiFetch(`/schedule-groups/${groupId}/members/${memberId}`, { method: 'DELETE' }); await loadData()
   }
 
   async function deleteGroup(group: Group) {
     if (!window.confirm(`¿Eliminar el turno ${group.startTime} — ${group.endTime}? Los socios quedarán sin turno asignado.`)) return
-    const response = await apiFetch(`${API_URL}/schedule-groups/${group.id}`, { method: 'DELETE' })
+    const response = await apiFetch(`/schedule-groups/${group.id}`, { method: 'DELETE' })
     if (!response.ok) { setError('No se pudo eliminar el turno.'); return }
     setAddingTo(null); await loadData()
   }

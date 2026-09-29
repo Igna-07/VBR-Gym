@@ -1,9 +1,10 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common'
 import { createHash, randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'crypto'
 import type { Response } from 'express'
 import { promisify } from 'util'
 import { PrismaService } from '../prisma.service'
 import { CredentialsDto } from './dto/credentials.dto'
+import { clearLoginFailures, loginBlocked, recordLoginFailure } from './login-limit'
 
 const scrypt = promisify(scryptCallback)
 
@@ -24,11 +25,14 @@ export class AuthService {
   }
 
   async login(data: CredentialsDto, response: Response) {
-    const user = await this.prisma.adminUser.findUnique({ where: { email: data.email.trim().toLowerCase() } })
-    if (!user) throw new UnauthorizedException('Correo o contraseña incorrectos.')
+    const key = data.email.trim().toLowerCase()
+    if (loginBlocked(key)) throw new HttpException('Demasiados intentos. Probá de nuevo en 15 minutos.', HttpStatus.TOO_MANY_REQUESTS)
+    const user = await this.prisma.adminUser.findUnique({ where: { email: key } })
+    if (!user) { recordLoginFailure(key); throw new UnauthorizedException('Correo o contraseña incorrectos.') }
     const candidate = await scrypt(data.password, user.passwordSalt, 64) as Buffer
     const expected = Buffer.from(user.passwordHash, 'hex')
-    if (candidate.length !== expected.length || !timingSafeEqual(candidate, expected)) throw new UnauthorizedException('Correo o contraseña incorrectos.')
+    if (candidate.length !== expected.length || !timingSafeEqual(candidate, expected)) { recordLoginFailure(key); throw new UnauthorizedException('Correo o contraseña incorrectos.') }
+    clearLoginFailures(key)
     await this.createSession(user.id, response)
     return { id: user.id, email: user.email }
   }

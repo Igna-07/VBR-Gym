@@ -5,4 +5,5 @@ import { NoticesService } from './notices.service'
 export class NoticesController {
   constructor(private readonly noticesService: NoticesService) {}
   @Get() findAll() { return this.noticesService.findAll() }
+  @Get('today-reminders') todayReminders() { return this.noticesService.todayReminderSummary() }
 }
