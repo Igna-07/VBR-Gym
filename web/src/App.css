@@ -554,10 +554,14 @@
 .modal input, .modal select, .plan-price input { padding: 11px 12px; border: 1px solid #cfcfcf; border-radius: 8px; font: inherit; }
 .modal small { color: #777; }
 
-.plan-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-.plan-card label { display: grid; gap: 8px; font-weight: 700; }
-.plan-price { display: flex; gap: 10px; }
-.plan-price input { flex: 1; min-width: 0; }
+.plan-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+.plan-card { display: flex; flex-direction: column; min-width: 0; }
+.plan-card > header { flex-wrap: wrap; }
+/* minmax(0, 1fr): sin esto el campo no se achica y empuja "Guardar" fuera de la tarjeta. */
+.plan-card label { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: auto; font-weight: 700; }
+.plan-price { display: flex; gap: 10px; min-width: 0; }
+.plan-price input { flex: 1; width: 100%; min-width: 0; font-size: 16px; }
+.plan-price .primary-button { flex: none; padding: 11px 18px; }
 .cash-toolbar { justify-content: flex-start; gap: 16px; }
 
 @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } .brand { margin-bottom: 14px; } }
